@@ -1,0 +1,38 @@
+version: 2.1
+orbs:
+  aws-ecr: circleci/aws-ecr@3.0.0
+
+jobs:
+  build:
+    docker:
+      - image: linuxbrew/alpine:latest
+
+    steps:
+      - setup_remote_docker
+
+      - run:
+          name: Install docker
+          command: |
+            brew install docker
+
+      - run:
+          name: Build docker image
+          command: |
+            docker build -t shunichitakagi/build-tools .
+
+      - run:
+          name: Login to Docker Hub
+          command: |
+            docker login -u $USERNAME -p $PASSWORD
+
+      - run:
+          name: Push docker image to Docker Hub
+          command: |
+            docker push shunichitakagi/build-tools:latest
+
+workflows:
+  version: 2.1
+  workflow:
+    jobs:
+    - build:
+        context: qu
