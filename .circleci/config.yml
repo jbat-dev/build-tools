@@ -5,15 +5,11 @@ orbs:
 jobs:
   build:
     docker:
-      - image: linuxbrew/alpine:latest
+      - image: shunichitakagi/build-tools:latest
 
     steps:
+      - checkout
       - setup_remote_docker
-
-      - run:
-          name: Install docker
-          command: |
-            brew install docker
 
       - run:
           name: Build docker image
