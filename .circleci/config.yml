@@ -25,6 +25,7 @@ jobs:
           name: Push docker image to Docker Hub
           command: |
             docker push shunichitakagi/build-tools:latest
+            docker push shunichitakagi/build-tools:build${CIRCLE_BUILD_NUM}-$(date "+%Y%m%d%H%M%S")
 
 workflows:
   version: 2.1
