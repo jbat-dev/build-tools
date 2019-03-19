@@ -13,3 +13,6 @@ RUN curl https://bootstrap.pypa.io/get-pip.py | python
 
 ## Install awscli
 RUN pip install awscli
+
+## Install bash
+RUN apk add --no-cache bash
