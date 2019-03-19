@@ -1,7 +1,4 @@
 version: 2.1
-orbs:
-  aws-ecr: circleci/aws-ecr@3.0.0
-
 jobs:
   build:
     docker:
@@ -10,11 +7,18 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      
+      - run:
+          command: |
+            echo 'export REVISION=build${CIRCLE_BUILD_NUM}-'$(date "+%Y%m%d%H%M%S") >> ${BASH_ENV}
+          name: Setup environments
 
       - run:
-          name: Build docker image
+          name: Build docker image and tagged
           command: |
-            docker build -t shunichitakagi/build-tools .
+            IMAGE_ID=$(docker build .)
+            docker tag $IMAGE_ID shunichitakagi/build-tools:$REVISION
+            docker tag $IMAGE_ID shunichitakagi/build-tools:latest
 
       - run:
           name: Login to Docker Hub
@@ -22,13 +26,7 @@ jobs:
             docker login -u $USERNAME -p $PASSWORD
 
       - run:
-          name: Push docker image to Docker Hub
+          name: Push docker image with to Docker Hub
           command: |
+            docker push shunichitakagi/build-tools:$REVISION
             docker push shunichitakagi/build-tools:latest
-            docker push shunichitakagi/build-tools:build${CIRCLE_BUILD_NUM}-$(date "+%Y%m%d%H%M%S")
-
-workflows:
-  version: 2.1
-  workflow:
-    jobs:
-    - build
