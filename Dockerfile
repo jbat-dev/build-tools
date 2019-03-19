@@ -10,3 +10,6 @@ RUN go get gopkg.in/mikefarah/yq.v2
 
 ## Install pip
 RUN curl https://bootstrap.pypa.io/get-pip.py | python
+
+## Install awscli
+RUN pip install awscli
