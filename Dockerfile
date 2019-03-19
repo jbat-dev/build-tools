@@ -6,6 +6,7 @@ RUN apk add --no-cache bash curl git openssh docker go python musl-dev
 RUN export GOPATH=/root/go
 RUN export PATH=$PATH:$GOPATH/bin
 RUN go get gopkg.in/mikefarah/yq.v2
+RUN echo alias yq='yq.v2' >> ~/.bashrc
 
 ## Install pip & awscli
 RUN curl https://bootstrap.pypa.io/get-pip.py | python
