@@ -2,7 +2,7 @@ FROM alpine:latest
 LABEL maintainer "shunichitakagi <shunichi_takagi@jbat.co.jp>"
 
 RUN apk add --no-cache curl git docker go musl-dev
-RUN apk add --no-cache python3
+RUN apk add --no-cache python
 
 RUN export GOPATH=/root/go
 RUN export PATH=$PATH:$GOPATH/bin
