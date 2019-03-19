@@ -7,18 +7,12 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      
-      - run:
-          command: |
-            echo 'export REVISION=build${CIRCLE_BUILD_NUM}-'$(date "+%Y%m%d%H%M%S") >> ${BASH_ENV}
-          name: Setup environments
 
       - run:
           name: Build docker image and tagged
           command: |
             IMAGE_ID=$(docker build . --quiet)
-            echo $REVISION
-            docker tag $IMAGE_ID shunichitakagi/build-tools:$REVISION
+            docker tag $IMAGE_ID shunichitakagi/build-tools:0.0.1-build${CIRCLE_BUILD_NUM}
             docker tag $IMAGE_ID shunichitakagi/build-tools:latest
 
       - run:
@@ -29,5 +23,5 @@ jobs:
       - run:
           name: Push docker image with to Docker Hub
           command: |
-            docker push shunichitakagi/build-tools:$REVISION
+            docker push shunichitakagi/build-tools:0.0.1-build${CIRCLE_BUILD_NUM}
             docker push shunichitakagi/build-tools:latest
