@@ -17,6 +17,7 @@ jobs:
           name: Build docker image and tagged
           command: |
             IMAGE_ID=$(docker build . --quiet)
+            echo $REVISION
             docker tag $IMAGE_ID shunichitakagi/build-tools:$REVISION
             docker tag $IMAGE_ID shunichitakagi/build-tools:latest
 
