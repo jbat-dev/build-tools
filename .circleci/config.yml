@@ -12,7 +12,8 @@ jobs:
       - run:
           name: Build docker image and tagged
           command: |
-            IMAGE_ID=$(docker build . --quiet)
+            docker build . --iidfile imageid
+            IMAGE_ID=$(cat imageid)
             docker tag $IMAGE_ID shunichitakagi/build-tools:0.0.1-build${CIRCLE_BUILD_NUM}
             docker tag $IMAGE_ID shunichitakagi/build-tools:latest
 
