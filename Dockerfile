@@ -12,6 +12,7 @@ RUN apk add --no-cache bash curl git openssh docker go python musl-dev
 RUN go get gopkg.in/mikefarah/yq.v2
 RUN ln -s $(which yq.v2) /usr/bin/yq
 
-## Install pip & awscli
+## Install pip & awscli, slack-cli
 RUN curl https://bootstrap.pypa.io/get-pip.py | python
 RUN pip install awscli
+RUN pip install slack-cli
