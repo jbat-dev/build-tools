@@ -16,3 +16,8 @@ RUN ln -s $(which yq.v2) /usr/bin/yq
 RUN curl https://bootstrap.pypa.io/get-pip.py | python
 RUN pip install awscli
 RUN pip install slack-cli
+
+# Install iam authenticator
+RUN curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator \
+    && chmod +x ./aws-iam-authenticator \
+    && mv ./aws-iam-authenticator /usr/local/bin/
