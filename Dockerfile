@@ -21,3 +21,42 @@ RUN pip install slack-cli
 RUN curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator \
     && chmod +x ./aws-iam-authenticator \
     && mv ./aws-iam-authenticator /usr/local/bin/
+
+# install hugo
+RUN curl -kL -o hugo.tar.gz https://github.com/gohugoio/hugo/archive/v0.55.6.tar.gz \
+    && tar -xvzf hugo.tar.gz \
+    && cd hugo-0.55.6 \
+    && go install
+
+# install pandoc
+ENV PANDOC_VERSION 2.7.2
+ENV PANDOC_DOWNLOAD_URL https://github.com/jgm/pandoc/archive/$PANDOC_VERSION.tar.gz
+ENV PANDOC_ROOT /usr/local/pandoc
+
+RUN apk add --no-cache \
+    gmp \
+    libffi \
+ && apk add --no-cache --virtual build-dependencies \
+    --repository "http://nl.alpinelinux.org/alpine/edge/community" \
+    ghc \
+    cabal \
+    linux-headers \
+    musl-dev \
+    zlib-dev \
+    curl \
+ && mkdir -p /pandoc-build && cd /pandoc-build \
+ && curl -fsSL "$PANDOC_DOWNLOAD_URL" -o pandoc.tar.gz \
+ && tar -xzf pandoc.tar.gz && rm -f pandoc.tar.gz \
+ && ( cd pandoc-$PANDOC_VERSION && cabal update && cabal install --only-dependencies \
+    && cabal configure --prefix=$PANDOC_ROOT \
+    && cabal build \
+    && cabal copy \
+    && cd .. ) \
+ && rm -Rf pandoc-$PANDOC_VERSION/ \
+ && apk del --purge build-dependencies \
+ && rm -Rf /root/.cabal/ /root/.ghc/ \
+ && cd / && rm -Rf /pandoc-build \
+ && mv $PANDOC_ROOT/bin/* /usr/local/bin
+
+# nodejs
+RUN apk add --no-cache nodejs
