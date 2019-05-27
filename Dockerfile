@@ -6,7 +6,7 @@ ENV GOPATH  /root/go
 ENV PATH    $PATH:$GOPATH/bin
 
 ## Install by apk
-RUN apk add --no-cache bash curl git openssh docker go python musl-dev
+RUN apk add --no-cache bash curl git openssh docker go python musl-dev zip
 
 ## Install yq
 RUN go get gopkg.in/mikefarah/yq.v2
