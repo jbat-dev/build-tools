@@ -1,27 +1,31 @@
-FROM alpine:latest
-LABEL maintainer "shunichitakagi <shunichi_takagi@jbat.co.jp>"
+FROM circleci/openjdk:8-jdk
+LABEL maintainer="jbat-dev"
 
-## Setup environments
-ENV GOPATH  /root/go
-ENV PATH    $PATH:$GOPATH/bin
+### Install by apk
+RUN sudo apt-get update
+RUN sudo apt-get install bash curl git docker python musl-dev zip
 
-## Install by apk
-RUN apk add --no-cache bash curl git openssh docker go python musl-dev zip
+### Install go
+RUN sudo curl -o go.tar.gz https://dl.google.com/go/go1.12.6.linux-amd64.tar.gz \
+    && sudo tar -C /usr/local -xzf go.tar.gz
 
-## Install yq
+ENV GOHOME /usr/local/go
+ENV PATH    $PATH:$GOHOME/bin:~/bin
+
+### install yq
 RUN go get gopkg.in/mikefarah/yq.v2
-RUN ln -s $(which yq.v2) /usr/bin/yq
+RUN sudo ln -s $(which yq.v2) /usr/bin/yq
 
 ## Install pip & awscli, slack-cli
-RUN curl https://bootstrap.pypa.io/get-pip.py | python
-RUN pip install awscli
-RUN pip install slack-cli
+RUN sudo apt-get install python-pip
+RUN sudo pip install awscli
+RUN sudo pip install slack-cli
 
-# Install iam authenticator
-RUN curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator \
-    && chmod +x ./aws-iam-authenticator \
-    && mv ./aws-iam-authenticator /usr/local/bin/
+## Install iam authenticator
+RUN sudo curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator \
+    && sudo chmod +x ./aws-iam-authenticator \
+    && sudo mv ./aws-iam-authenticator /usr/local/bin/
 
-RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
-    && chmod +x kubectl \
-    && mv kubectl /usr/local/bin/
+RUN sudo curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
+    && sudo chmod +x kubectl \
+    && sudo mv kubectl /usr/local/bin/
