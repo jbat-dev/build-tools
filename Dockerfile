@@ -25,3 +25,8 @@ RUN curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
     && chmod +x kubectl \
     && mv kubectl /usr/local/bin/
+
+# Install Helm
+RUN curl -o helm.tar.gz https://storage.googleapis.com/kubernetes-helm/helm-v2.13.1-linux-amd64.tar.gz \
+    && tar -zxvf helm.tar.gz \
+    && cp linux-amd64/helm /usr/local/bin/helm
