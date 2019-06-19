@@ -6,7 +6,7 @@ ENV GOPATH  /root/go
 ENV PATH    $PATH:$GOPATH/bin
 
 ## Install by apk
-RUN apk add --no-cache bash curl git openssh docker go python musl-dev zip terraform
+RUN apk add --no-cache bash curl git openssh docker go python musl-dev zip
 
 ## Install yq
 RUN go get gopkg.in/mikefarah/yq.v2
@@ -25,3 +25,8 @@ RUN curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
     && chmod +x kubectl \
     && mv kubectl /usr/local/bin/
+
+RUN curl -o terraform.zip https://releases.hashicorp.com/terraform/0.12.2/terraform_0.12.2_linux_amd64.zip \
+    && unzip terraform.zip \
+    && chmod +x terraform \
+    && mv terraform /usr/local/bin/
