@@ -45,7 +45,7 @@ RUN curl -o terraform.zip https://releases.hashicorp.com/terraform/0.12.2/terraf
 RUN curl -kL -o hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.17/hugo_0.17_Linux-64bit.tar.gz \
     && tar -zxvf hugo.tar.gz \
     && cd hugo_0.17_linux_amd64 \
-    && mv hugo_0.17_linux_amd64 /usr/local/bin/hugo
+    && mv hugo_0.17_linux_amd64 /usr/local/bin/hugo \
     && hugo version
 
 # install pandoc
