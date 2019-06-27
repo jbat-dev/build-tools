@@ -30,3 +30,8 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s
 RUN curl -o helm.tar.gz https://storage.googleapis.com/kubernetes-helm/helm-v2.13.1-linux-amd64.tar.gz \
     && tar -zxvf helm.tar.gz \
     && cp linux-amd64/helm /usr/local/bin/helm
+
+RUN curl -o terraform.zip https://releases.hashicorp.com/terraform/0.12.2/terraform_0.12.2_linux_amd64.zip \
+    && unzip terraform.zip \
+    && chmod +x terraform \
+    && mv terraform /usr/local/bin/
