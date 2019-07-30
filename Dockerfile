@@ -38,45 +38,45 @@ RUN curl -o terraform.zip https://releases.hashicorp.com/terraform/0.12.2/terraf
 
 
 # install hugo
-#RUN curl -kL -o hugo.tar.gz https://github.com/gohugoio/hugo/archive/v0.55.6.tar.gz \
-#    && tar -xvzf hugo.tar.gz \
-#    && cd hugo-0.55.6 \
-#    && go install
-RUN curl -kL -o hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.17/hugo_0.17_Linux-64bit.tar.gz \
-    && tar -zxvf hugo.tar.gz \
-    && cd hugo_0.17_linux_amd64 \
-    && mv hugo_0.17_linux_amd64 /usr/local/bin/hugo
+RUN curl -kL -o hugo.tar.gz https://github.com/gohugoio/hugo/archive/v0.55.6.tar.gz \
+    && tar -xvzf hugo.tar.gz \
+    && cd hugo-0.55.6 \
+    && go install
+#RUN curl -kL -o hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.17/hugo_0.17_Linux-64bit.tar.gz \
+#    && tar -zxvf hugo.tar.gz \
+#    && cd hugo_0.17_linux_amd64 \
+#    && mv hugo_0.17_linux_amd64 /usr/local/bin/hugo
 #    && hugo version
 
 # install pandoc
-ENV PANDOC_VERSION 2.7.2
-ENV PANDOC_DOWNLOAD_URL https://github.com/jgm/pandoc/archive/$PANDOC_VERSION.tar.gz
-ENV PANDOC_ROOT /usr/local/pandoc
+#ENV PANDOC_VERSION 2.7.2
+#ENV PANDOC_DOWNLOAD_URL https://github.com/jgm/pandoc/archive/$PANDOC_VERSION.tar.gz
+#ENV PANDOC_ROOT /usr/local/pandoc
 
-RUN apk add --no-cache \
-    gmp \
-    libffi \
- && apk add --no-cache --virtual build-dependencies \
-    --repository "http://nl.alpinelinux.org/alpine/edge/community" \
-    ghc \
-    cabal \
-    linux-headers \
-    musl-dev \
-    zlib-dev \
-    curl \
- && mkdir -p /pandoc-build && cd /pandoc-build \
- && curl -fsSL "$PANDOC_DOWNLOAD_URL" -o pandoc.tar.gz \
- && tar -xzf pandoc.tar.gz && rm -f pandoc.tar.gz \
- && ( cd pandoc-$PANDOC_VERSION && cabal update && cabal install --only-dependencies \
-    && cabal configure --prefix=$PANDOC_ROOT \
-    && cabal build \
-    && cabal copy \
-    && cd .. ) \
- && rm -Rf pandoc-$PANDOC_VERSION/ \
- && apk del --purge build-dependencies \
- && rm -Rf /root/.cabal/ /root/.ghc/ \
- && cd / && rm -Rf /pandoc-build \
- && mv $PANDOC_ROOT/bin/* /usr/local/bin
+#RUN apk add --no-cache \
+#    gmp \
+#    libffi \
+# && apk add --no-cache --virtual build-dependencies \
+#    --repository "http://nl.alpinelinux.org/alpine/edge/community" \
+#    ghc \
+#    cabal \
+#    linux-headers \
+#    musl-dev \
+#    zlib-dev \
+#    curl \
+# && mkdir -p /pandoc-build && cd /pandoc-build \
+# && curl -fsSL "$PANDOC_DOWNLOAD_URL" -o pandoc.tar.gz \
+# && tar -xzf pandoc.tar.gz && rm -f pandoc.tar.gz \
+# && ( cd pandoc-$PANDOC_VERSION && cabal update && cabal install --only-dependencies \
+#    && cabal configure --prefix=$PANDOC_ROOT \
+#    && cabal build \
+#    && cabal copy \
+#    && cd .. ) \
+# && rm -Rf pandoc-$PANDOC_VERSION/ \
+# && apk del --purge build-dependencies \
+# && rm -Rf /root/.cabal/ /root/.ghc/ \
+# && cd / && rm -Rf /pandoc-build \
+# && mv $PANDOC_ROOT/bin/* /usr/local/bin
 # && pandoc -v
 
 # nodejs
